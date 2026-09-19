@@ -1,0 +1,17 @@
+Plukbos Kardinge, kaartviewer
+© 2026 Geominds
+
+Code (alles buiten data/) valt onder de EUPL-1.2, zie LICENSE.
+Gegevens en foto's in data/ vallen onder CC BY 4.0, zie LICENSE-DATA.
+
+Naamsvermelding bij hergebruik van de gegevens:
+  Inventarisatie: Geominds (https://geominds.nl)
+
+Meegeleverde onderdelen van derden:
+  Leaflet 1.9.4               BSD-2-Clause   lib/leaflet/LICENSE
+  Atkinson Hyperlegible       OFL-1.1        fonts/LICENSE-atkinson-hyperlegible.txt
+  Newsreader                  OFL-1.1        fonts/LICENSE-newsreader.txt
+
+Ondergronden (niet meegeleverd, live geladen):
+  Luchtfoto: Beeldmateriaal Nederland via PDOK
+  Kaart: BRT Achtergrondkaart, Kadaster via PDOK
