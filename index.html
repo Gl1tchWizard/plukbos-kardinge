@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="nl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Plukbos Kardinge</title>
+  <meta name="description" content="Kaart van de bomen in het plukbos bij Kardinge: wat je wanneer kunt plukken en hoe de bomen erbij staan.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='%23E0156B' stroke='%23fff' stroke-width='4'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="lib/leaflet/leaflet.css">
+  <link rel="stylesheet" href="css/viewer.css">
+</head>
+<body>
+  <div class="app">
+    <aside class="paneel" id="paneel" aria-label="Bomen en oogst">
+      <div class="greep-houder">
+        <button class="greep" id="greep" type="button" aria-expanded="false" aria-controls="paneel">
+          <span class="greep-streep" aria-hidden="true"></span>
+          <span class="visueel-verborgen" id="greepTekst">Paneel vergroten</span>
+        </button>
+      </div>
+
+      <header class="kop">
+        <h1>Plukbos Kardinge</h1>
+        <p class="ondertitel">Wat je wanneer kunt plukken, en hoe de bomen erbij staan.</p>
+        <p class="voorbeeld" id="voorbeeld" hidden>Voorbeeldgegevens: deze bomen zijn verzonnen.</p>
+      </header>
+
+      <div class="weergave" role="group" aria-label="Kleur de bomen op">
+        <button type="button" data-modus="oogst" aria-pressed="true">Oogst</button>
+        <button type="button" data-modus="gezondheid" aria-pressed="false">Gezondheid</button>
+      </div>
+
+      <section class="deel" id="oogstdeel" aria-label="Oogst">
+        <div class="kalender" id="kalender" role="group" aria-label="Kies een maand"></div>
+        <p class="samenvatting" id="samenvatting" aria-live="polite"></p>
+        <div class="legenda" id="oogstLegenda"></div>
+        <label class="schakel">
+          <input type="checkbox" id="alleenVrucht">
+          <span>Alleen bomen met vrucht tonen</span>
+        </label>
+      </section>
+
+      <section class="deel" id="gezondheiddeel" aria-label="Gezondheid" hidden>
+        <p class="samenvatting" id="gezSamenvatting"></p>
+        <div class="gez-knoppen" id="gezKnoppen" role="group" aria-label="Kies welke bomen je ziet"></div>
+      </section>
+
+      <div class="soorten" id="soorten" role="group" aria-label="Kies een soort"></div>
+
+      <h2 class="lijstkop" id="lijstkop"></h2>
+      <ul class="lijst" id="lijst"></ul>
+      <p class="melding" id="melding" role="alert" hidden></p>
+
+      <footer class="voet">
+        <button type="button" class="tekstknop" id="overKnop">Over deze kaart</button>
+        <a class="geominds" id="geomindsLink" href="https://geominds.nl">Inventarisatie: <strong>Geominds</strong></a>
+      </footer>
+    </aside>
+
+    <main class="kaartvlak">
+      <div id="kaart" role="region" aria-label="Kaart van het plukbos"></div>
+    </main>
+
+    <article class="boom" id="boom" aria-labelledby="boomTitel" hidden></article>
+  </div>
+
+  <dialog class="over" id="over" aria-labelledby="overTitel">
+    <form method="dialog" class="over-sluit">
+      <button type="submit" aria-label="Sluiten">&times;</button>
+    </form>
+    <h2 id="overTitel">Over deze kaart</h2>
+    <p>Deze kaart laat zien waar de bomen in het plukbos bij Kardinge staan, wanneer ze vrucht dragen en hoe gezond ze zijn.</p>
+    <p>Kies een maand in de oogstkalender om te zien wat er dan te plukken is. Klik op een boom voor een foto en de details. Oogstperiodes verschillen per jaar en per plek, dus zie ze als richtlijn.</p>
+    <p>De bomen zijn geïnventariseerd met de inspectie-app van <a href="https://geominds.nl" id="overGeominds">Geominds</a>. Geominds stelt de inventarisatie en deze kaart kosteloos beschikbaar.</p>
+    <h3>Hergebruik</h3>
+    <p>De broncode van deze kaart is open source onder de EUPL-1.2<span id="broncodeLink"></span>. De boomgegevens en foto's vallen onder CC BY 4.0: hergebruik is toegestaan met de vermelding <q>Inventarisatie: Geominds</q>.</p>
+    <p class="klein">Luchtfoto: Beeldmateriaal Nederland. Kaart: Kadaster. Beide via PDOK.</p>
+  </dialog>
+
+  <script src="lib/leaflet/leaflet.js"></script>
+  <script src="js/viewer.js"></script>
+</body>
+</html>
