@@ -1,0 +1,43 @@
+{
+  "Appel": {
+    "wetenschappelijk": "Malus domestica",
+    "oogst": { "van": 8, "tot": 10 },
+    "rassen": {
+      "Elstar":             { "oogst": { "van": 9,  "tot": 10 } },
+      "Goudreinette":       { "oogst": { "van": 10, "tot": 11 } },
+      "James Grieve":       { "oogst": { "van": 8,  "tot": 9 } },
+      "Schone van Boskoop": { "oogst": { "van": 10, "tot": 10 } }
+    }
+  },
+  "Peer": {
+    "wetenschappelijk": "Pyrus communis",
+    "oogst": { "van": 8, "tot": 10 },
+    "rassen": {
+      "Conference":      { "oogst": { "van": 9,  "tot": 10 } },
+      "Gieser Wildeman": { "oogst": { "van": 10, "tot": 11 } }
+    }
+  },
+  "Pruim": {
+    "wetenschappelijk": "Prunus domestica",
+    "oogst": { "van": 8, "tot": 9 },
+    "rassen": {
+      "Opal":                   { "oogst": { "van": 8, "tot": 8 } },
+      "Victoria":               { "oogst": { "van": 8, "tot": 9 } },
+      "Reine Claude d'Oullins": { "oogst": { "van": 8, "tot": 8 } }
+    }
+  },
+  "Zoete kers": {
+    "wetenschappelijk": "Prunus avium",
+    "oogst": { "van": 6, "tot": 7 },
+    "rassen": {
+      "Kordia": { "oogst": { "van": 7, "tot": 7 } }
+    }
+  },
+  "Walnoot":        { "wetenschappelijk": "Juglans regia",      "oogst": { "van": 9,  "tot": 10 } },
+  "Tamme kastanje": { "wetenschappelijk": "Castanea sativa",    "oogst": { "van": 10, "tot": 10 } },
+  "Hazelaar":       { "wetenschappelijk": "Corylus avellana",   "oogst": { "van": 8,  "tot": 9 } },
+  "Mispel":         { "wetenschappelijk": "Mespilus germanica", "oogst": { "van": 11, "tot": 12 } },
+  "Kweepeer":       { "wetenschappelijk": "Cydonia oblonga",    "oogst": { "van": 10, "tot": 10 } },
+  "Zwarte moerbei": { "wetenschappelijk": "Morus nigra",        "oogst": { "van": 7,  "tot": 8 } },
+  "Vlier":          { "wetenschappelijk": "Sambucus nigra",     "oogst": { "van": 8,  "tot": 9 } }
+}
