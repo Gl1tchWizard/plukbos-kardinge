@@ -56,7 +56,10 @@
     .setView(INSTELLINGEN.start, INSTELLINGEN.startZoom);
 
   L.control.zoom({ position: 'topleft', zoomInTitle: 'Inzoomen', zoomOutTitle: 'Uitzoomen' }).addTo(kaart);
-  kaart.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
+  kaart.attributionControl.setPrefix(
+    '<a href="' + esc(INSTELLINGEN.geomindsUrl) + '" target="_blank" rel="noopener">Inventarisatie: Geominds</a> | ' +
+    '<a href="https://leafletjs.com">Leaflet</a>'
+  );
 
   var luchtfoto = L.tileLayer(
     'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/Actueel_orthoHR/EPSG:3857/{z}/{x}/{y}.jpeg', {
