@@ -116,7 +116,7 @@ Zie je zelf na een wijziging nog de oude versie, druk dan op Ctrl+F5 (Cmd+Shift+
 
 De code valt onder de [EUPL-1.2](LICENSE). De gegevens en foto's in `data/` vallen onder [CC BY 4.0](LICENSE-DATA). Wie de gegevens hergebruikt, vermeldt daarbij: **Inventarisatie: Geominds (https://www.geominds.nl)**.
 
-De viewer toont Geominds op vier plekken: als badge linksonder op de kaart, in de voet van het paneel, onderaan elk boomkaartje en in het venster "Over deze kaart".
+De viewer toont Geominds op drie plekken: als "Powered by Geominds" in de voet van het paneel, onderaan elk boomkaartje en in het venster "Over deze kaart".
 
 Het Geominds-logo en het merkteken in `img/` vallen niet onder de EUPL. Ze mogen alleen gebruikt worden om naar Geominds te verwijzen.
 

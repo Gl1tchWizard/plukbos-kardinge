@@ -322,20 +322,23 @@ a { color: inherit; }
   padding: 14px 24px 16px;
   background: var(--veld);
   border-top: 1px solid var(--lijn);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px;
   font-size: 13px;
   color: var(--mos);
 }
 .lijst { margin-bottom: 24px; }
-.voet-rij {
+.voet-logo {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 5px;
+  text-decoration: none;
+  color: var(--mos);
 }
-.voet-logo { display: block; line-height: 0; }
+.voet-label { font-size: 11px; line-height: 1; }
 .voet-logo img { display: block; height: 19px; width: auto; }
-.voet-tekst { margin: 8px 0 0; }
-.voet-tekst a { color: var(--inkt); font-weight: 700; text-underline-offset: 3px; }
 .tekstknop {
   border: 0;
   background: none;
@@ -345,24 +348,6 @@ a { color: inherit; }
   cursor: pointer;
   color: var(--mos);
 }
-
-/* ---------- Geominds op de kaart ---------- */
-
-.leaflet-container a.gm-badge {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 7px 10px 6px;
-  background: rgba(255, 255, 255, .95);
-  border-radius: 8px;
-  box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
-  color: var(--mos);
-  font-size: 11px;
-  line-height: 1.2;
-  text-decoration: none;
-}
-.gm-badge img { display: block; height: 15px; width: auto; }
-.leaflet-container a.gm-badge:hover span { color: var(--inkt); text-decoration: underline; text-underline-offset: 2px; }
 
 /* ---------- Boomkaartje ---------- */
 
@@ -609,9 +594,6 @@ a { color: inherit; }
   .maand-staaf { height: 44px; }
 
   .leaflet-control-scale { display: none; }
-  .leaflet-bottom.leaflet-right .leaflet-control-attribution { max-width: calc(100vw - 205px); }
-  .leaflet-container a.gm-badge { padding: 6px 9px 5px; font-size: 10px; gap: 3px; }
-  .gm-badge img { height: 13px; }
   .voet {
     position: static;
     margin: 0 -18px;

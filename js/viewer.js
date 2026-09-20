@@ -71,24 +71,6 @@
   L.control.layers({ 'Luchtfoto': luchtfoto, 'Kaart': topokaart }, null, { position: 'topleft' }).addTo(kaart);
   L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(kaart);
 
-  // Vermelding van Geominds op de kaart, linksonder boven de schaalbalk.
-  var GeomindsBadge = L.Control.extend({
-    options: { position: 'bottomleft' },
-    onAdd: function () {
-      var a = L.DomUtil.create('a', 'gm-badge');
-      a.href = INSTELLINGEN.productUrl;
-      a.target = '_blank';
-      a.rel = 'noopener';
-      a.title = 'Meer over ' + INSTELLINGEN.productNaam + ' van Geominds';
-      a.innerHTML =
-        '<img src="img/geominds-logo.png" alt="Geominds" width="117" height="15">' +
-        '<span>Geïnspecteerd met ' + esc(INSTELLINGEN.productNaam) + '</span>';
-      L.DomEvent.disableClickPropagation(a);
-      return a;
-    }
-  });
-  new GeomindsBadge().addTo(kaart);
-
   var boomlaag = L.layerGroup().addTo(kaart);
 
   // ---------------------------------------------------------------------------
