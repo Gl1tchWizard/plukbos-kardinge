@@ -52,8 +52,13 @@
       <p class="melding" id="melding" role="alert" hidden></p>
 
       <footer class="voet">
-        <button type="button" class="tekstknop" id="overKnop">Over deze kaart</button>
-        <a class="geominds" id="geomindsLink" href="https://geominds.nl">Inventarisatie: <strong>Geominds</strong></a>
+        <div class="voet-rij">
+          <a class="voet-logo" data-link="geominds" href="https://www.geominds.nl/nl/" target="_blank" rel="noopener">
+            <img src="img/geominds-logo.png" alt="Geominds" width="148" height="19">
+          </a>
+          <button type="button" class="tekstknop" id="overKnop">Over deze kaart</button>
+        </div>
+        <p class="voet-tekst">Bomen geïnspecteerd met <a data-link="product" href="https://www.geominds.nl/nl/products/boomwacht/" target="_blank" rel="noopener"><span data-tekst="product">Boomwacht</span></a>, de boominspectie-app van Geominds.</p>
       </footer>
     </aside>
 
@@ -71,10 +76,14 @@
     <h2 id="overTitel">Over deze kaart</h2>
     <p>Deze kaart laat zien waar de bomen in het plukbos bij Kardinge staan, wanneer ze vrucht dragen en hoe gezond ze zijn.</p>
     <p>Kies een maand in de oogstkalender om te zien wat er dan te plukken is. Klik op een boom voor een foto en de details. Oogstperiodes verschillen per jaar en per plek, dus zie ze als richtlijn.</p>
-    <p>De bomen zijn geïnventariseerd met de inspectie-app van <a href="https://geominds.nl" id="overGeominds">Geominds</a>. Geominds stelt de inventarisatie en deze kaart kosteloos beschikbaar.</p>
+    <div class="over-geominds">
+      <a data-link="geominds" href="https://www.geominds.nl/nl/" target="_blank" rel="noopener"><img src="img/geominds-logo.png" alt="Geominds" width="172" height="22"></a>
+      <p>De bomen zijn geïnspecteerd met <span data-tekst="product">Boomwacht</span>, de boominspectie-app van Geominds. Inspecteurs leggen daarmee bomen vast in het veld, met hulp van AI bij het herkennen van ziektes en het opstellen van rapporten. Geominds stelt de inspectie en deze kaart kosteloos beschikbaar.</p>
+      <p><a data-link="product" href="https://www.geominds.nl/nl/products/boomwacht/" target="_blank" rel="noopener">Meer over <span data-tekst="product">Boomwacht</span></a></p>
+    </div>
     <h3>Hergebruik</h3>
     <p>De broncode van deze kaart is open source onder de EUPL-1.2<span id="broncodeLink"></span>. De boomgegevens en foto's vallen onder CC BY 4.0: hergebruik is toegestaan met de vermelding <q>Inventarisatie: Geominds</q>.</p>
-    <p class="klein">Luchtfoto: Beeldmateriaal Nederland. Kaart: Kadaster. Beide via PDOK.</p>
+    <p class="klein">Luchtfoto: Beeldmateriaal Nederland. Kaart: Kadaster. Beide via PDOK. Kaartsoftware: Leaflet.</p>
   </dialog>
 
   <script src="lib/leaflet/leaflet.js"></script>

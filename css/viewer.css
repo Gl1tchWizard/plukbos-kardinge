@@ -81,7 +81,7 @@ a { color: inherit; }
   grid-row: 1;
   overflow-y: auto;
   border-right: 1px solid var(--lijn);
-  padding: 28px 24px 20px;
+  padding: 28px 24px 0;
   display: flex;
   flex-direction: column;
   background: var(--veld);
@@ -313,18 +313,29 @@ a { color: inherit; }
 }
 .melding code { font-size: 12px; word-break: break-all; }
 
-/* ---------- Voet ---------- */
+/* ---------- Voet met Geominds, op desktop altijd in beeld ---------- */
 
 .voet {
-  margin-top: auto;
-  padding-top: 28px;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 12px;
+  position: sticky;
+  bottom: 0;
+  margin: auto -24px 0;
+  padding: 14px 24px 16px;
+  background: var(--veld);
+  border-top: 1px solid var(--lijn);
   font-size: 13px;
   color: var(--mos);
 }
+.lijst { margin-bottom: 24px; }
+.voet-rij {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.voet-logo { display: block; line-height: 0; }
+.voet-logo img { display: block; height: 19px; width: auto; }
+.voet-tekst { margin: 8px 0 0; }
+.voet-tekst a { color: var(--inkt); font-weight: 700; text-underline-offset: 3px; }
 .tekstknop {
   border: 0;
   background: none;
@@ -334,9 +345,24 @@ a { color: inherit; }
   cursor: pointer;
   color: var(--mos);
 }
-.geominds { text-decoration: none; }
-.geominds strong { color: var(--inkt); }
-.geominds:hover strong { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Geominds op de kaart ---------- */
+
+.leaflet-container a.gm-badge {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 7px 10px 6px;
+  background: rgba(255, 255, 255, .95);
+  border-radius: 8px;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, .3);
+  color: var(--mos);
+  font-size: 11px;
+  line-height: 1.2;
+  text-decoration: none;
+}
+.gm-badge img { display: block; height: 15px; width: auto; }
+.leaflet-container a.gm-badge:hover span { color: var(--inkt); text-decoration: underline; text-underline-offset: 2px; }
 
 /* ---------- Boomkaartje ---------- */
 
@@ -440,6 +466,19 @@ a { color: inherit; }
   background: var(--veld);
   border-radius: 8px;
 }
+.boom-bron {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid var(--lijn);
+  font-size: 13px;
+  color: var(--mos);
+  text-decoration: none;
+}
+.boom-bron img { flex: none; }
+.boom-bron:hover span { color: var(--inkt); text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- Over-venster ---------- */
 
@@ -457,6 +496,14 @@ a { color: inherit; }
 .over h3 { font-size: 15px; margin: 20px 0 4px; }
 .over p { margin: 0 0 10px; max-width: 62ch; }
 .over .klein { font-size: 13px; color: var(--mos); }
+.over-geominds {
+  margin: 18px 0 8px;
+  padding: 16px 18px;
+  background: var(--veld);
+  border-radius: 10px;
+}
+.over-geominds img { display: block; height: 22px; width: auto; margin-bottom: 12px; }
+.over-geominds p:last-child { margin-bottom: 0; }
 .over-sluit { position: absolute; top: 12px; right: 12px; margin: 0; }
 .over-sluit button {
   width: 36px; height: 36px; border-radius: 50%;
@@ -562,6 +609,14 @@ a { color: inherit; }
   .maand-staaf { height: 44px; }
 
   .leaflet-control-scale { display: none; }
+  .leaflet-bottom.leaflet-right .leaflet-control-attribution { max-width: calc(100vw - 205px); }
+  .leaflet-container a.gm-badge { padding: 6px 9px 5px; font-size: 10px; gap: 3px; }
+  .gm-badge img { height: 13px; }
+  .voet {
+    position: static;
+    margin: 0 -18px;
+    padding: 14px 18px 0;
+  }
   .boom {
     top: auto;
     left: 0; right: 0; bottom: 0;

@@ -13,7 +13,9 @@
     bomen: 'data/bomen.geojson',
     soorten: 'data/soorten.json',
     fotomap: 'data/foto/',
-    geomindsUrl: 'https://geominds.nl',
+    geomindsUrl: 'https://www.geominds.nl/nl/',
+    productNaam: 'Boomwacht',
+    productUrl: 'https://www.geominds.nl/nl/products/boomwacht/',
     broncodeUrl: '',              // bijvoorbeeld https://codeberg.org/<organisatie>/plukbos-kardinge
     start: [53.2429, 6.5958],     // kaartmidden zolang de gegevens laden
     startZoom: 17,
@@ -54,10 +56,7 @@
     .setView(INSTELLINGEN.start, INSTELLINGEN.startZoom);
 
   L.control.zoom({ position: 'topleft', zoomInTitle: 'Inzoomen', zoomOutTitle: 'Uitzoomen' }).addTo(kaart);
-  kaart.attributionControl.setPrefix(
-    '<a href="' + esc(INSTELLINGEN.geomindsUrl) + '">Inventarisatie: Geominds</a> | ' +
-    '<a href="https://leafletjs.com">Leaflet</a>'
-  );
+  kaart.attributionControl.setPrefix('<a href="https://leafletjs.com">Leaflet</a>');
 
   var luchtfoto = L.tileLayer(
     'https://service.pdok.nl/hwh/luchtfotorgb/wmts/v1_0/Actueel_orthoHR/EPSG:3857/{z}/{x}/{y}.jpeg', {
@@ -71,6 +70,24 @@
     });
   L.control.layers({ 'Luchtfoto': luchtfoto, 'Kaart': topokaart }, null, { position: 'topleft' }).addTo(kaart);
   L.control.scale({ imperial: false, position: 'bottomleft' }).addTo(kaart);
+
+  // Vermelding van Geominds op de kaart, linksonder boven de schaalbalk.
+  var GeomindsBadge = L.Control.extend({
+    options: { position: 'bottomleft' },
+    onAdd: function () {
+      var a = L.DomUtil.create('a', 'gm-badge');
+      a.href = INSTELLINGEN.productUrl;
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.title = 'Meer over ' + INSTELLINGEN.productNaam + ' van Geominds';
+      a.innerHTML =
+        '<img src="img/geominds-logo.png" alt="Geominds" width="117" height="15">' +
+        '<span>Geïnspecteerd met ' + esc(INSTELLINGEN.productNaam) + '</span>';
+      L.DomEvent.disableClickPropagation(a);
+      return a;
+    }
+  });
+  new GeomindsBadge().addTo(kaart);
 
   var boomlaag = L.layerGroup().addTo(kaart);
 
@@ -337,6 +354,10 @@
           '<div><dt>Boomnummer</dt><dd>' + esc(b.id) + '</dd></div>' +
         '</dl>' +
         (b.opmerking ? '<p class="opmerking">' + esc(b.opmerking) + '</p>' : '') +
+        '<a class="boom-bron" href="' + esc(INSTELLINGEN.productUrl) + '" target="_blank" rel="noopener">' +
+          '<img src="img/geominds-teken.svg" alt="" width="16" height="16">' +
+          '<span>Geïnspecteerd met ' + esc(INSTELLINGEN.productNaam) + ' van Geominds</span>' +
+        '</a>' +
       '</div>';
   }
 
@@ -527,7 +548,13 @@
     if (id && vindBoom(id)) kies(id);
   }
 
-  ['geomindsLink', 'overGeominds'].forEach(function (id) { $(id).href = INSTELLINGEN.geomindsUrl; });
+  // Links en productnaam komen uit INSTELLINGEN, zodat ze op één plek staan.
+  Array.prototype.forEach.call(document.querySelectorAll('[data-link]'), function (a) {
+    a.href = a.getAttribute('data-link') === 'product' ? INSTELLINGEN.productUrl : INSTELLINGEN.geomindsUrl;
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-tekst="product"]'), function (el) {
+    el.textContent = INSTELLINGEN.productNaam;
+  });
   if (INSTELLINGEN.broncodeUrl) {
     $('broncodeLink').innerHTML = ', zie <a href="' + esc(INSTELLINGEN.broncodeUrl) + '">de broncode</a>';
   }
