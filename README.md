@@ -104,6 +104,14 @@ Bovenin `js/viewer.js` staat het blok `INSTELLINGEN` met:
 
 Meer hoeft er normaal niet aangepast te worden.
 
+## Wijzigingen in de code doorvoeren
+
+Browsers bewaren `css/viewer.css` en `js/viewer.js` in hun cache. In `index.html` staat daarom een versie achter beide bestanden, bijvoorbeeld `viewer.js?v=2026-09-20`. Zet daar na elke wijziging in `css/` of `js/` een nieuwe datum neer; dan halen bezoekers de nieuwe versie op.
+
+De gegevens in `data/` worden altijd vers geladen. Daarvoor hoeft niets aangepast te worden.
+
+Zie je zelf na een wijziging nog de oude versie, druk dan op Ctrl+F5 (Cmd+Shift+R op een Mac).
+
 ## Licenties en naamsvermelding
 
 De code valt onder de [EUPL-1.2](LICENSE). De gegevens en foto's in `data/` vallen onder [CC BY 4.0](LICENSE-DATA). Wie de gegevens hergebruikt, vermeldt daarbij: **Inventarisatie: Geominds (https://www.geominds.nl)**.
