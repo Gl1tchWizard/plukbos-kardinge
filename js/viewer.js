@@ -17,7 +17,7 @@
     productNaam: 'Boomwacht',
     productUrl: 'https://www.geominds.nl/nl/products/boomwacht/',
     broncodeUrl: '',              // bijvoorbeeld https://codeberg.org/<organisatie>/plukbos-kardinge
-    start: [53.2429, 6.5958],     // kaartmidden zolang de gegevens laden
+    start: [53.2425, 6.5962],     // kaartmidden zolang de gegevens laden
     startZoom: 17,
     zoomBijBoom: 19
   };
