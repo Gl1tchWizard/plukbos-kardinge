@@ -16,7 +16,7 @@
     geomindsUrl: 'https://www.geominds.nl/nl/',
     productNaam: 'Boomwacht',
     productUrl: 'https://www.geominds.nl/nl/products/boomwacht/',
-    broncodeUrl: '',              // bijvoorbeeld https://codeberg.org/<organisatie>/plukbos-kardinge
+    broncodeUrl: 'https://github.com/Gl1tchWizard/plukbos-kardinge',
     start: [53.2425, 6.5962],     // kaartmidden zolang de gegevens laden
     startZoom: 17,
     zoomBijBoom: 19
