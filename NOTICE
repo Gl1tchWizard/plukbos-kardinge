@@ -5,7 +5,10 @@ Code (alles buiten data/) valt onder de EUPL-1.2, zie LICENSE.
 Gegevens en foto's in data/ vallen onder CC BY 4.0, zie LICENSE-DATA.
 
 Naamsvermelding bij hergebruik van de gegevens:
-  Inventarisatie: Geominds (https://geominds.nl)
+  Inventarisatie: Geominds (https://www.geominds.nl)
+
+Het Geominds-logo en -merkteken in img/ vallen niet onder de EUPL.
+Ze mogen alleen gebruikt worden om naar Geominds te verwijzen.
 
 Meegeleverde onderdelen van derden:
   Leaflet 1.9.4               BSD-2-Clause   lib/leaflet/LICENSE
