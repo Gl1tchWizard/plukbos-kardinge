@@ -1,6 +1,6 @@
 # Plukbos Kardinge, kaartviewer
 
-Open-source kaartviewer voor de bomen in het plukbos bij Kardinge in Groningen. De kaart laat zien waar elke boom staat, wanneer hij vrucht draagt en hoe gezond hij is. De gegevens komen uit een inspectie met de app van [Geominds](https://geominds.nl).
+Open-source kaartviewer voor de bomen in het plukbos bij Kardinge in Groningen. De kaart laat zien waar elke boom staat, wanneer hij vrucht draagt en hoe gezond hij is. De bomen zijn geïnspecteerd met [Boomwacht](https://www.geominds.nl/nl/products/boomwacht/), de boominspectie-app van [Geominds](https://www.geominds.nl/nl/).
 
 De viewer is een statische website: HTML, CSS, JavaScript en twee JSON-bestanden. Er is geen database, geen build-stap en geen servercode. Elke webserver die bestanden kan serveren, kan hem hosten.
 
@@ -15,6 +15,7 @@ data/soorten.json       oogstperiode en Latijnse naam per soort en ras
 data/foto/              foto's per boom
 lib/leaflet/            Leaflet 1.9.4, lokaal meegeleverd
 fonts/                  Atkinson Hyperlegible en Newsreader, lokaal meegeleverd
+img/                    Geominds-logo en merkteken
 LICENSE                 EUPL-1.2, voor de code
 LICENSE-DATA            CC BY 4.0, voor alles in data/
 NOTICE                  naamsvermelding en onderdelen van derden
@@ -30,7 +31,11 @@ Browsers laden de gegevens niet als je `index.html` dubbelklikt. Start daarom ee
 python3 -m http.server
 ```
 
-en open `http://localhost:8000`.
+en open `http://localhost:8000`. Op Windows heet Python meestal `py`:
+
+```
+py -m http.server --bind 127.0.0.1
+```
 
 ## Hosten
 
@@ -90,12 +95,21 @@ Telefoon-GPS zit onder bladerdek al snel een paar meter naast de boom. Controlee
 
 ## Instellingen
 
-Bovenin `js/viewer.js` staat het blok `INSTELLINGEN` met de paden naar de gegevens, de link naar Geominds, de link naar de broncode, het startpunt van de kaart en het zoomniveau bij het openen van een boom. Meer hoeft er normaal niet aangepast te worden.
+Bovenin `js/viewer.js` staat het blok `INSTELLINGEN` met:
+
+- de paden naar de gegevens en foto's
+- de links naar Geominds en naar de productpagina, en de productnaam
+- de link naar de broncode
+- het startpunt van de kaart en het zoomniveau bij het openen van een boom
+
+Meer hoeft er normaal niet aangepast te worden.
 
 ## Licenties en naamsvermelding
 
-De code valt onder de [EUPL-1.2](LICENSE). De gegevens en foto's in `data/` vallen onder [CC BY 4.0](LICENSE-DATA). Wie de gegevens hergebruikt, vermeldt daarbij: **Inventarisatie: Geominds (https://geominds.nl)**.
+De code valt onder de [EUPL-1.2](LICENSE). De gegevens en foto's in `data/` vallen onder [CC BY 4.0](LICENSE-DATA). Wie de gegevens hergebruikt, vermeldt daarbij: **Inventarisatie: Geominds (https://www.geominds.nl)**.
 
-De viewer toont die vermelding in de bronregel van de kaart, onderin het paneel en in het venster "Over deze kaart".
+De viewer toont Geominds op vier plekken: als badge linksonder op de kaart, in de voet van het paneel, onderaan elk boomkaartje en in het venster "Over deze kaart".
+
+Het Geominds-logo en het merkteken in `img/` vallen niet onder de EUPL. Ze mogen alleen gebruikt worden om naar Geominds te verwijzen.
 
 Meegeleverde onderdelen van derden staan in [NOTICE](NOTICE): Leaflet (BSD-2-Clause) en de lettertypen Atkinson Hyperlegible en Newsreader (SIL Open Font License 1.1).
