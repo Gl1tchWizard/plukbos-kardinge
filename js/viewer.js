@@ -120,24 +120,32 @@
       oogst = sInfo.oogst;
     }
     var c = f.geometry.coordinates;
+    var fotos = Array.isArray(p.fotos) ? p.fotos.map(String) : [];
+    if (p.foto && fotos.indexOf(String(p.foto)) === -1) fotos.unshift(String(p.foto));
     return {
       id: String(p.id || f.id || 'boom-' + (i + 1)),
+      nummer: p.nummer !== undefined && p.nummer !== null ? String(p.nummer) : '',
       soort: soort,
       ras: ras,
       latijn: p.wetenschappelijk || sInfo.wetenschappelijk || '',
+      eetbaar: sInfo.eetbaar !== false,
       oogst: oogst,
       maanden: oogstMaanden(oogst),
       gezondheid: normaliseerGezondheid(p.gezondheid),
-      foto: p.foto ? String(p.foto) : '',
+      fotos: fotos,
       opmerking: p.opmerking ? String(p.opmerking) : '',
+      problemen: Array.isArray(p.problemen) ? p.problemen.map(String) : [],
       datum: p.inspectiedatum ? String(p.inspectiedatum) : '',
+      geplant: p.geplant ? String(p.geplant) : '',
       latlng: L.latLng(c[1], c[0]),
       marker: null
     };
   }
 
+  // Zoekt op het id uit de inspectie-app en op het boomnummer, zodat #12 ook werkt.
   function vindBoom(id) {
     for (var i = 0; i < bomen.length; i++) if (bomen[i].id === id) return bomen[i];
+    for (var j = 0; j < bomen.length; j++) if (bomen[j].nummer && bomen[j].nummer === id) return bomen[j];
     return null;
   }
 
@@ -161,6 +169,7 @@
   function naam(b) { return b.soort + (b.ras ? ' ' + b.ras : ''); }
 
   function oogstTekst(b, kort) {
+    if (!b.eetbaar) return 'Niet om te plukken';
     if (!b.oogst) return 'Oogstperiode onbekend';
     var lijst = kort ? KORT : MAANDEN;
     var van = lijst[b.oogst.van - 1], tot = lijst[b.oogst.tot - 1];
@@ -174,9 +183,13 @@
     return Number(d[3]) + ' ' + MAANDEN[Number(d[2]) - 1] + ' ' + d[1];
   }
 
-  function fotoUrl(b) {
-    if (!b.foto) return '';
-    return /^(https?:)?\/\//.test(b.foto) ? b.foto : INSTELLINGEN.fotomap + b.foto;
+  function fotoUrl(naam) {
+    if (!naam) return '';
+    return /^(https?:)?\/\//.test(naam) ? naam : INSTELLINGEN.fotomap + naam;
+  }
+  // Miniatuur volgens de afspraak naam.jpg -> naam-klein.jpg; valt terug op de foto zelf.
+  function kleinUrl(naam) {
+    return fotoUrl(naam.replace(/(\.[a-z0-9]+)$/i, '-klein$1'));
   }
 
   // ---------------------------------------------------------------------------
@@ -249,11 +262,10 @@
     var tel = {};
     bomen.forEach(function (b) { tel[b.soort] = (tel[b.soort] || 0) + 1; });
     var soorten = Object.keys(tel).sort(function (a, b) { return a.localeCompare(b, 'nl'); });
-    $('soorten').innerHTML =
-      '<button type="button" class="chip" data-soort="" aria-pressed="' + !staat.soort + '">Alle soorten</button>' +
+    $('soortKeuze').innerHTML =
+      '<option value="">Alle soorten (' + bomen.length + ')</option>' +
       soorten.map(function (s) {
-        return '<button type="button" class="chip" data-soort="' + esc(s) + '" aria-pressed="' + (staat.soort === s) + '">' +
-          esc(s) + '</button>';
+        return '<option value="' + esc(s) + '"' + (staat.soort === s ? ' selected' : '') + '>' + esc(s) + ' (' + tel[s] + ')</option>';
       }).join('');
   }
 
@@ -265,7 +277,7 @@
       var ga = GEZ_VOLGORDE.indexOf(a.gezondheid), gb = GEZ_VOLGORDE.indexOf(b.gezondheid);
       if (ga !== gb) return ga - gb;
     }
-    return naam(a).localeCompare(naam(b), 'nl') || a.id.localeCompare(b.id, 'nl');
+    return naam(a).localeCompare(naam(b), 'nl') || (Number(a.nummer) || 0) - (Number(b.nummer) || 0) || a.id.localeCompare(b.id, 'nl');
   }
 
   function renderLijst() {
@@ -280,7 +292,7 @@
       return '<li><button type="button" class="rij" data-id="' + esc(b.id) + '"' +
         (b.id === staat.gekozen ? ' aria-current="true"' : '') + '>' +
         '<i class="stip stip--' + status(b) + '"></i>' +
-        '<span class="rij-naam">' + esc(b.soort) + (b.ras ? ' <span class="rij-ras">' + esc(b.ras) + '</span>' : '') + '</span>' +
+        '<span class="rij-naam">' + (b.nummer ? '<span class="rij-nr">' + esc(b.nummer) + '</span>' : '') + esc(b.soort) + (b.ras ? ' <span class="rij-ras">' + esc(b.ras) + '</span>' : '') + '</span>' +
         '<span class="rij-meta">' + esc(meta) + '</span>' +
         '</button></li>';
     }).join('');
@@ -311,10 +323,19 @@
   // Boomkaartje
   // ---------------------------------------------------------------------------
   function renderKaartje(b) {
-    var src = fotoUrl(b);
-    var foto = src
-      ? '<a href="' + esc(src) + '" target="_blank" rel="noopener"><img src="' + esc(src) + '" alt="Foto van ' + esc(naam(b)) + ', boom ' + esc(b.id) + '"></a>'
+    var nr = b.nummer || b.id;
+    var foto = b.fotos.length
+      ? '<a id="boomFotoLink" href="' + esc(fotoUrl(b.fotos[0])) + '" target="_blank" rel="noopener">' +
+          '<img id="boomFoto" src="' + esc(fotoUrl(b.fotos[0])) + '" alt="Foto van ' + esc(naam(b)) + ', boom ' + esc(nr) + '"></a>'
       : '<div class="geen-foto">Nog geen foto</div>';
+    var strook = '';
+    if (b.fotos.length > 1) {
+      strook = '<div class="fotostrook" role="group" aria-label="Meer foto\'s van deze boom">' +
+        b.fotos.map(function (f, i) {
+          return '<button type="button" data-foto="' + esc(f) + '" aria-pressed="' + (i === 0) + '" aria-label="Foto ' + (i + 1) + ' van ' + b.fotos.length + '">' +
+            '<img src="' + esc(kleinUrl(f)) + '" alt="" loading="lazy" onerror="this.onerror=null;this.src=\'' + esc(fotoUrl(f)) + '\'"></button>';
+        }).join('') + '</div>';
+    }
     var latijn = (b.latijn ? '<i>' + esc(b.latijn) + '</i>' : '') + (b.ras ? (b.latijn ? ' ' : '') + '\u2018' + esc(b.ras) + '\u2019' : '');
     var cellen = '', namen = '';
     for (var m = 1; m <= 12; m++) {
@@ -323,7 +344,7 @@
     }
     $('boom').innerHTML =
       '<button type="button" class="sluit" aria-label="Sluiten">&times;</button>' +
-      '<figure class="boom-foto">' + foto + '</figure>' +
+      '<figure class="boom-foto">' + foto + strook + '</figure>' +
       '<div class="boom-tekst">' +
         '<h2 id="boomTitel" tabindex="-1">' + esc(b.soort) + '</h2>' +
         (latijn ? '<p class="latijn">' + latijn + '</p>' : '') +
@@ -336,8 +357,12 @@
         '<dl class="feiten">' +
           '<div><dt>Gezondheid</dt><dd><i class="stip stip--' + b.gezondheid + '"></i>' + GEZONDHEID[b.gezondheid] + '</dd></div>' +
           '<div><dt>Geïnspecteerd</dt><dd>' + esc(datumTekst(b.datum)) + '</dd></div>' +
-          '<div><dt>Boomnummer</dt><dd>' + esc(b.id) + '</dd></div>' +
+          (b.geplant ? '<div><dt>Geplant</dt><dd>' + esc(datumTekst(b.geplant)) + '</dd></div>' : '') +
+          '<div><dt>Boomnummer</dt><dd>' + esc(nr) + '</dd></div>' +
         '</dl>' +
+        (b.problemen.length
+          ? '<div class="problemen"><p>Aandachtspunten</p><ul>' + b.problemen.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul></div>'
+          : '') +
         (b.opmerking ? '<p class="opmerking">' + esc(b.opmerking) + '</p>' : '') +
         '<a class="boom-bron" href="' + esc(INSTELLINGEN.productUrl) + '" target="_blank" rel="noopener">' +
           '<img src="img/geominds-teken.svg" alt="" width="16" height="16">' +
@@ -444,14 +469,9 @@
       if (nieuw) nieuw.focus({ preventScroll: true });
     });
 
-    $('soorten').addEventListener('click', function (e) {
-      var knop = e.target.closest('.chip');
-      if (!knop) return;
-      var s = knop.getAttribute('data-soort') || null;
-      staat.soort = staat.soort === s ? null : s;
+    $('soortKeuze').addEventListener('change', function (e) {
+      staat.soort = e.target.value || null;
       render(true);
-      var nieuw = $('soorten').querySelector('[data-soort="' + CSS.escape(staat.soort || '') + '"]');
-      if (nieuw) nieuw.focus({ preventScroll: true });
     });
 
     $('lijst').addEventListener('click', function (e) {
@@ -460,7 +480,15 @@
     });
 
     $('boom').addEventListener('click', function (e) {
-      if (e.target.closest('.sluit')) sluitKaartje();
+      if (e.target.closest('.sluit')) { sluitKaartje(); return; }
+      var knop = e.target.closest('.fotostrook button');
+      if (!knop) return;
+      var f = knop.getAttribute('data-foto');
+      $('boomFoto').src = fotoUrl(f);
+      $('boomFotoLink').href = fotoUrl(f);
+      Array.prototype.forEach.call(knop.parentNode.children, function (k) {
+        k.setAttribute('aria-pressed', String(k === knop));
+      });
     });
 
     kaart.on('click', sluitKaartje);
@@ -498,7 +526,8 @@
       : 'De boomgegevens zijn niet geladen. Controleer of <code>' + esc(INSTELLINGEN.bomen) + '</code> en <code>' +
         esc(INSTELLINGEN.soorten) + '</code> op de server staan en geldige JSON bevatten.' +
         '<br><code>' + esc(fout && fout.message || fout) + '</code>';
-    ['oogstdeel', 'gezondheiddeel', 'soorten', 'lijstkop'].forEach(function (id) { $(id).hidden = true; });
+    ['oogstdeel', 'gezondheiddeel', 'lijstkop'].forEach(function (id) { $(id).hidden = true; });
+    document.querySelector('.soorten').hidden = true;
     document.querySelector('.weergave').hidden = true;
   }
 
@@ -511,7 +540,7 @@
     if (!bomen.length) throw new Error('Het bestand bevat geen bomen met een puntlocatie.');
 
     bomen.forEach(function (b) {
-      b.marker = L.marker(b.latlng, { title: naam(b), keyboard: true, riseOnHover: true });
+      b.marker = L.marker(b.latlng, { title: (b.nummer ? b.nummer + '. ' : '') + naam(b), keyboard: true, riseOnHover: true });
       b.marker.on('click', function () { kies(b.id); });
       // Markers hebben role="button" en tabindex; Enter en spatie openen de boom.
       b.marker.on('keypress', function (e) {

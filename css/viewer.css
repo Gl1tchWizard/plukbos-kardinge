@@ -254,26 +254,27 @@ a { color: inherit; }
 
 .soorten {
   display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+  align-items: center;
+  gap: 12px;
   margin: 22px 0 0;
   padding-top: 18px;
   border-top: 1px solid var(--lijn);
 }
-.chip {
+.soorten label { color: var(--mos); }
+.soorten select {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  color: var(--inkt);
+  padding: 8px 36px 8px 12px;
   border: 1px solid var(--lijn);
-  background: #fff;
-  border-radius: 999px;
-  padding: 5px 11px;
-  font-size: 13px;
+  border-radius: 10px;
+  background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%231F2A22' stroke-width='1.8'/%3E%3C/svg%3E") no-repeat right 14px center;
+  appearance: none;
+  -webkit-appearance: none;
   cursor: pointer;
 }
-.chip:hover { border-color: var(--mos); }
-.chip[aria-pressed="true"] {
-  background: var(--inkt);
-  border-color: var(--inkt);
-  color: var(--veld);
-}
+.soorten select:hover { border-color: var(--mos); }
 
 /* ---------- Lijst ---------- */
 
@@ -301,6 +302,12 @@ a { color: inherit; }
 .rij:hover { background: var(--veld-diep); }
 .rij[aria-current="true"] { background: var(--veld-diep); }
 .rij-naam { min-width: 0; }
+.rij-nr {
+  display: inline-block;
+  min-width: 2.2em;
+  color: var(--mos);
+  font-variant-numeric: tabular-nums;
+}
 .rij-ras { color: var(--mos); }
 .rij-meta { font-size: 13px; color: var(--mos); white-space: nowrap; }
 .leeg { padding: 14px 6px; color: var(--mos); }
@@ -395,6 +402,26 @@ a { color: inherit; }
   color: var(--mos);
   font-size: 14px;
 }
+.fotostrook {
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px 0;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.fotostrook button {
+  flex: none;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: var(--veld-diep);
+  cursor: pointer;
+  overflow: hidden;
+}
+.fotostrook button[aria-pressed="true"] { border-color: var(--inkt); }
+.fotostrook img { display: block; width: 100%; height: 100%; object-fit: cover; }
 .boom-tekst { padding: 18px 20px 20px; }
 .boom h2 {
   font-family: var(--kop);
@@ -445,6 +472,16 @@ a { color: inherit; }
 }
 .feiten dt { color: var(--mos); }
 .feiten dd { margin: 0; display: flex; align-items: center; gap: 8px; }
+.problemen {
+  margin: 16px 0 0;
+  padding: 10px 12px;
+  border-left: 3px solid var(--matig);
+  background: #FFF7DD;
+  border-radius: 0 8px 8px 0;
+}
+.problemen p { margin: 0 0 4px; font-weight: 700; }
+.problemen ul { margin: 0; padding-left: 18px; }
+.problemen li + li { margin-top: 2px; }
 .opmerking {
   margin: 16px 0 0;
   padding: 10px 12px;
