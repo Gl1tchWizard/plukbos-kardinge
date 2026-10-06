@@ -1,43 +1,162 @@
 {
+  "_toelichting": "Soortentabel voor de viewer en het importscript. Per soort: Latijnse naam, oogstperiode (maandnummers), rassen met een eigen periode, en 'eetbaar': false voor bomen en struiken waar niets te plukken valt. 'namen' en 'aliassen' zijn de Nederlandse en Latijnse schrijfwijzen uit de inspectie-export die naar deze soort verwijzen.",
+
   "Appel": {
     "wetenschappelijk": "Malus domestica",
+    "aliassen": ["Malus Domestica"],
+    "namen": ["Appelboom", "Eetappel", "Appel"],
     "oogst": { "van": 8, "tot": 10 },
     "rassen": {
-      "Elstar":             { "oogst": { "van": 9,  "tot": 10 } },
-      "Goudreinette":       { "oogst": { "van": 10, "tot": 11 } },
-      "James Grieve":       { "oogst": { "van": 8,  "tot": 9 } },
-      "Schone van Boskoop": { "oogst": { "van": 10, "tot": 10 } }
+      "Bramley's Seedling": { "oogst": { "van": 10, "tot": 10 } },
+      "Granny Smith":       { "oogst": { "van": 10, "tot": 11 } },
+      "Keizer Alexander":   { "oogst": { "van": 9,  "tot": 10 } },
+      "Rabau":              { "oogst": { "van": 10, "tot": 10 } }
     }
   },
   "Peer": {
     "wetenschappelijk": "Pyrus communis",
-    "oogst": { "van": 8, "tot": 10 },
-    "rassen": {
-      "Conference":      { "oogst": { "van": 9,  "tot": 10 } },
-      "Gieser Wildeman": { "oogst": { "van": 10, "tot": 11 } }
-    }
+    "namen": ["Gewone peer", "Peer"],
+    "oogst": { "van": 8, "tot": 10 }
+  },
+  "Wilde peer": {
+    "wetenschappelijk": "Pyrus pyraster",
+    "oogst": { "van": 9, "tot": 10 }
+  },
+  "Kweepeer": {
+    "wetenschappelijk": "Cydonia oblonga",
+    "oogst": { "van": 10, "tot": 10 }
+  },
+  "Mispel": {
+    "wetenschappelijk": "Mespilus germanica",
+    "oogst": { "van": 11, "tot": 12 }
   },
   "Pruim": {
     "wetenschappelijk": "Prunus domestica",
-    "oogst": { "van": 8, "tot": 9 },
-    "rassen": {
-      "Opal":                   { "oogst": { "van": 8, "tot": 8 } },
-      "Victoria":               { "oogst": { "van": 8, "tot": 9 } },
-      "Reine Claude d'Oullins": { "oogst": { "van": 8, "tot": 8 } }
-    }
+    "aliassen": ["Prunus"],
+    "namen": ["Pruim"],
+    "oogst": { "van": 8, "tot": 9 }
+  },
+  "Kroosjes": {
+    "wetenschappelijk": "Prunus domestica subsp. insititia",
+    "namen": ["Kroosjes", "Kroosjespruim"],
+    "oogst": { "van": 9, "tot": 10 }
   },
   "Zoete kers": {
     "wetenschappelijk": "Prunus avium",
-    "oogst": { "van": 6, "tot": 7 },
-    "rassen": {
-      "Kordia": { "oogst": { "van": 7, "tot": 7 } }
-    }
+    "oogst": { "van": 6, "tot": 7 }
   },
-  "Walnoot":        { "wetenschappelijk": "Juglans regia",      "oogst": { "van": 9,  "tot": 10 } },
-  "Tamme kastanje": { "wetenschappelijk": "Castanea sativa",    "oogst": { "van": 10, "tot": 10 } },
-  "Hazelaar":       { "wetenschappelijk": "Corylus avellana",   "oogst": { "van": 8,  "tot": 9 } },
-  "Mispel":         { "wetenschappelijk": "Mespilus germanica", "oogst": { "van": 11, "tot": 12 } },
-  "Kweepeer":       { "wetenschappelijk": "Cydonia oblonga",    "oogst": { "van": 10, "tot": 10 } },
-  "Zwarte moerbei": { "wetenschappelijk": "Morus nigra",        "oogst": { "van": 7,  "tot": 8 } },
-  "Vlier":          { "wetenschappelijk": "Sambucus nigra",     "oogst": { "van": 8,  "tot": 9 } }
+  "Sleedoorn": {
+    "wetenschappelijk": "Prunus spinosa",
+    "oogst": { "van": 10, "tot": 11 }
+  },
+  "Rode bes": {
+    "wetenschappelijk": "Ribes rubrum",
+    "oogst": { "van": 7, "tot": 7 }
+  },
+  "Kruisbes": {
+    "wetenschappelijk": "Ribes uva-crispa",
+    "oogst": { "van": 7, "tot": 7 }
+  },
+  "Ribes": {
+    "wetenschappelijk": "Ribes albifolium",
+    "namen": ["Ribes albifolium"]
+  },
+  "Braam": {
+    "wetenschappelijk": "Rubus fruticosus agg.",
+    "aliassen": ["Braam", "Rubus fruticosus"],
+    "oogst": { "van": 7, "tot": 9 }
+  },
+  "Vijg": {
+    "wetenschappelijk": "Ficus carica",
+    "namen": ["Vijgenboom", "Vijg"],
+    "oogst": { "van": 8, "tot": 9 }
+  },
+  "Walnoot": {
+    "wetenschappelijk": "Juglans regia",
+    "namen": ["Echte walnoot", "Walnoot", "Okkernoot"],
+    "oogst": { "van": 9, "tot": 10 }
+  },
+  "Zwarte walnoot": {
+    "wetenschappelijk": "Juglans nigra",
+    "oogst": { "van": 10, "tot": 10 }
+  },
+  "Japanse walnoot": {
+    "wetenschappelijk": "Juglans ailantifolia",
+    "oogst": { "van": 9, "tot": 10 }
+  },
+  "Pecannoot": {
+    "wetenschappelijk": "Carya illinoinensis",
+    "oogst": { "van": 10, "tot": 11 }
+  },
+  "Hazelaar": {
+    "wetenschappelijk": "Corylus avellana",
+    "oogst": { "van": 9, "tot": 10 }
+  },
+  "Tamme kastanje": {
+    "wetenschappelijk": "Castanea sativa",
+    "oogst": { "van": 10, "tot": 10 }
+  },
+  "Vlier": {
+    "wetenschappelijk": "Sambucus nigra",
+    "namen": ["Gewone vlier", "Vlier"],
+    "oogst": { "van": 8, "tot": 9 }
+  },
+  "Duindoorn": {
+    "wetenschappelijk": "Hippophae rhamnoides",
+    "oogst": { "van": 9, "tot": 10 }
+  },
+  "Meidoorn": {
+    "wetenschappelijk": "Crataegus monogyna",
+    "namen": ["Eenstijlige meidoorn", "Meidoorn"],
+    "oogst": { "van": 9, "tot": 10 }
+  },
+  "Lijsterbes": {
+    "wetenschappelijk": "Sorbus aucuparia",
+    "namen": ["Gewone lijsterbes", "Lijsterbes"],
+    "oogst": { "van": 9, "tot": 10 }
+  },
+  "Rimpelroos": {
+    "wetenschappelijk": "Rosa rugosa",
+    "namen": ["Japanse bottelroos", "Rimpelroos", "Bottelroos"],
+    "oogst": { "van": 9, "tot": 10 }
+  },
+
+  "Amerikaanse vogelkers": {
+    "wetenschappelijk": "Prunus serotina",
+    "eetbaar": false
+  },
+  "Rode kornoelje": {
+    "wetenschappelijk": "Cornus sanguinea",
+    "eetbaar": false
+  },
+  "Gelderse roos": {
+    "wetenschappelijk": "Viburnum opulus",
+    "eetbaar": false
+  },
+  "Sierpeer": {
+    "wetenschappelijk": "Pyrus calleryana",
+    "namen": ["Sierpeer 'Chanticleer'", "Sierpeer"],
+    "eetbaar": false
+  },
+  "Siberische sierappel": {
+    "wetenschappelijk": "Malus baccata",
+    "eetbaar": false
+  },
+  "Es": {
+    "wetenschappelijk": "Fraxinus excelsior",
+    "namen": ["Gewone es", "Es"],
+    "eetbaar": false
+  },
+  "Zomereik": {
+    "wetenschappelijk": "Quercus robur",
+    "eetbaar": false
+  },
+  "Winterlinde": {
+    "wetenschappelijk": "Tilia cordata",
+    "eetbaar": false
+  },
+  "Zwarte populier": {
+    "wetenschappelijk": "Populus nigra",
+    "eetbaar": false
+  }
 }
