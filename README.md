@@ -11,8 +11,9 @@ index.html              de pagina
 css/viewer.css          opmaak
 js/viewer.js            kaart en bediening; bovenin staat het blok INSTELLINGEN
 data/bomen.geojson      de bomen uit de inspectie, één punt per boom
-data/soorten.json       oogstperiode en Latijnse naam per soort en ras
-data/foto/              foto's per boom
+data/soorten.json       oogstperiode, Latijnse naam en naamvarianten per soort
+data/foto/              foto's en miniaturen per boom
+tools/                  importscript voor een Boomwacht-export
 lib/leaflet/            Leaflet 1.9.4, lokaal meegeleverd
 fonts/                  Atkinson Hyperlegible en Newsreader, lokaal meegeleverd
 img/                    Geominds-logo en merkteken
@@ -45,49 +46,72 @@ Zet in `js/viewer.js` bij `broncodeUrl` het adres van de repository. Dan verschi
 
 ## Gegevens bijwerken
 
+De bomen zijn ingemeten met Boomwacht. Na een nieuwe inspectie exporteer je daaruit een map met `trees.csv` en een map `images/`, en zet je die om met het importscript:
+
+```
+pip install pillow
+python3 tools/importeer_boomwacht.py <map-met-trees.csv>
+```
+
+Het script schrijft `data/bomen.geojson` en vult `data/foto/` opnieuw met foto's op webformaat (1000 pixels, zonder metadata) en miniaturen voor de fotostrook. Soorten die het script niet kent, meldt het aan het eind; voeg die toe aan `data/soorten.json` en draai het nog een keer. Daarna: versie in `index.html` ophogen (zie verderop), committen en pushen.
+
 ### Bomen: `data/bomen.geojson`
 
-Een standaard GeoJSON FeatureCollection met punten in WGS84 (lengtegraad, breedtegraad). Opent direct in QGIS en op geojson.io. Na een nieuwe inspectie vervang je dit bestand door de export.
+Een standaard GeoJSON FeatureCollection met punten in WGS84 (lengtegraad, breedtegraad). Opent direct in QGIS en op geojson.io. Het importscript maakt dit bestand, maar het is ook met de hand te bewerken.
 
 | Veld | Verplicht | Inhoud |
 |---|---|---|
-| `id` | ja | uniek boomnummer, bijvoorbeeld `b017`; wordt ook de link naar de boom (`#b017`) |
+| `id` | ja | het id van de boom uit Boomwacht, bijvoorbeeld `LA2M1O9Q`; blijft gelijk tussen exports |
+| `nummer` | nee | boomnummer uit de export; staat op het kaartje en in de lijst, en `#12` opent boom 12 |
 | `soort` | ja | Nederlandse soortnaam, gelijk aan een sleutel in `soorten.json` |
-| `ras` | nee | rasnaam, bijvoorbeeld `Elstar` |
+| `ras` | nee | rasnaam, bijvoorbeeld `Granny Smith` |
 | `gezondheid` | ja | `goed`, `matig` of `slecht`; iets anders wordt `onbekend` |
-| `inspectiedatum` | ja | datum als `JJJJ-MM-DD` |
-| `foto` | nee | bestandsnaam in `data/foto/`, of een volledige URL |
+| `inspectiedatum` | nee | datum als `JJJJ-MM-DD` |
+| `geplant` | nee | plantdatum als `JJJJ-MM-DD` |
+| `foto` | nee | hoofdfoto: bestandsnaam in `data/foto/`, of een volledige URL |
+| `fotos` | nee | alle foto's van de boom, hoofdfoto eerst; bij meer dan één verschijnt een fotostrook |
 | `opmerking` | nee | vrije tekst, verschijnt op het kaartje van de boom |
+| `problemen` | nee | lijst met aandachtspunten, bijvoorbeeld `["Appelschurft", "Stamscheur"]` |
 | `oogst_van`, `oogst_tot` | nee | maandnummers 1 tot en met 12; overschrijven de periode uit `soorten.json` voor deze ene boom |
 | `wetenschappelijk` | nee | Latijnse naam; overschrijft die uit `soorten.json` |
 
-Staat bovenin het bestand `"metadata": { "voorbeeld": true }`, dan toont de viewer de melding "Voorbeeldgegevens". Haal die regel weg zodra de echte inspectie erin staat.
+Bij elke foto `naam.jpg` hoort een miniatuur `naam-klein.jpg`. Ontbreekt die, dan gebruikt de viewer de foto zelf.
 
-### Oogstperiodes: `data/soorten.json`
+Staat bovenin het bestand `"metadata": { "voorbeeld": true }`, dan toont de viewer de melding "Voorbeeldgegevens".
 
-De inspectie legt de oogstperiode niet vast; die hoort bij de soort en het ras. Daarom staat hij in een eigen bestand, dat bij een nieuwe inspectie gewoon blijft staan.
+### Oogstperiodes en soortnamen: `data/soorten.json`
+
+De inspectie legt de oogstperiode niet vast; die hoort bij de soort en het ras. Daarom staat hij in een eigen bestand, dat bij een nieuwe inspectie gewoon blijft staan. Hetzelfde bestand vertelt het importscript welke namen uit de export bij welke soort horen.
 
 ```json
 "Appel": {
   "wetenschappelijk": "Malus domestica",
+  "aliassen": ["Malus Domestica"],
+  "namen": ["Appelboom", "Eetappel"],
   "oogst": { "van": 8, "tot": 10 },
   "rassen": {
-    "Elstar": { "oogst": { "van": 9, "tot": 10 } }
+    "Granny Smith": { "oogst": { "van": 10, "tot": 11 } }
   }
 }
 ```
 
-De viewer zoekt eerst de periode van het ras, dan die van de soort. Een periode mag over de jaarwisseling lopen, bijvoorbeeld `{ "van": 11, "tot": 1 }`. Nieuwe soort in de inspectie? Voeg hier een blok toe met dezelfde naam als in `bomen.geojson`.
+- `wetenschappelijk` en `aliassen`: Latijnse schrijfwijzen waaraan het importscript de soort herkent.
+- `namen`: Nederlandse namen uit de export die naar deze soort verwijzen. De sleutel zelf telt ook mee.
+- `oogst`: de periode voor de soort; `rassen` kan daar per ras van afwijken. Een periode mag over de jaarwisseling lopen, bijvoorbeeld `{ "van": 11, "tot": 1 }`.
+- `"eetbaar": false`: voor bomen en struiken waar niets te plukken valt, zoals de es en de zomereik. De viewer toont dan "Niet om te plukken".
+
+De viewer zoekt eerst de periode van het ras, dan die van de soort. Staat er geen periode en is de soort eetbaar, dan toont hij "Oogstperiode onbekend".
 
 ### Foto's: `data/foto/`
 
-Maak foto's kleiner en haal de metadata (tijdstip, toestel, soms GPS) eruit voordat je ze publiceert. Met ImageMagick in één keer voor de hele map:
+Het importscript maakt de foto's kleiner en haalt de metadata (tijdstip, toestel, soms GPS) eruit. Voeg je met de hand een foto toe, doe dan hetzelfde, bijvoorbeeld met ImageMagick:
 
 ```
-mogrify -resize '1200x1200>' -strip -quality 80 data/foto/*.jpg
+mogrify -resize '1000x1000>' -strip -quality 74 data/foto/naam.jpg
+convert data/foto/naam.jpg -resize '240x240>' -strip -quality 72 data/foto/naam-klein.jpg
 ```
 
-Een foto van 1200 pixels is ongeveer 150 kB en scherp genoeg voor het kaartje.
+Alle foto's samen zijn nu ongeveer 60 MB. Dat past ruim op GitHub Pages en op een gewone webserver. Komen er over de jaren veel inspecties bij, dan kunnen de foto's buiten de repository gezet worden; de velden `foto` en `fotos` accepteren ook volledige URL's.
 
 ### Posities controleren
 
