@@ -53,7 +53,7 @@ pip install pillow
 python3 tools/importeer_boomwacht.py <map-met-trees.csv>
 ```
 
-Het script schrijft `data/bomen.geojson` en vult `data/foto/` opnieuw met foto's op webformaat (1000 pixels, zonder metadata) en miniaturen voor de fotostrook. Soorten die het script niet kent, meldt het aan het eind; voeg die toe aan `data/soorten.json` en draai het nog een keer. Daarna: versie in `index.html` ophogen (zie verderop), committen en pushen.
+Het script schrijft `data/bomen.geojson` en vult `data/foto/` opnieuw met foto's op webformaat (900 pixels, zonder metadata) en miniaturen voor de fotostrook. Soorten die het script niet kent, meldt het aan het eind; voeg die toe aan `data/soorten.json` en draai het nog een keer. Daarna: versie in `index.html` ophogen (zie verderop), committen en pushen.
 
 ### Bomen: `data/bomen.geojson`
 
@@ -107,11 +107,11 @@ De viewer zoekt eerst de periode van het ras, dan die van de soort. Staat er gee
 Het importscript maakt de foto's kleiner en haalt de metadata (tijdstip, toestel, soms GPS) eruit. Voeg je met de hand een foto toe, doe dan hetzelfde, bijvoorbeeld met ImageMagick:
 
 ```
-mogrify -resize '1000x1000>' -strip -quality 74 data/foto/naam.jpg
+mogrify -resize '900x900>' -strip -quality 72 data/foto/naam.jpg
 convert data/foto/naam.jpg -resize '240x240>' -strip -quality 72 data/foto/naam-klein.jpg
 ```
 
-Alle foto's samen zijn nu ongeveer 60 MB. Dat past ruim op GitHub Pages en op een gewone webserver. Komen er over de jaren veel inspecties bij, dan kunnen de foto's buiten de repository gezet worden; de velden `foto` en `fotos` accepteren ook volledige URL's.
+Alle foto's samen zijn nu ongeveer 50 MB. Dat past ruim op GitHub Pages en op een gewone webserver. Komen er over de jaren veel inspecties bij, dan kunnen de foto's buiten de repository gezet worden; de velden `foto` en `fotos` accepteren ook volledige URL's.
 
 ### Posities controleren
 
