@@ -37,9 +37,9 @@ SOORTEN = REPO / 'data' / 'soorten.json'
 UIT_GEOJSON = REPO / 'data' / 'bomen.geojson'
 UIT_FOTO = REPO / 'data' / 'foto'
 
-FOTO_MAX = 1000      # langste zijde in pixels
+FOTO_MAX = 900       # langste zijde in pixels
 KLEIN_MAX = 240
-KWALITEIT = 74
+KWALITEIT = 72
 
 GEZONDHEID = {'good': 'goed', 'fair': 'matig', 'poor': 'slecht', 'unknown': 'onbekend'}
 
