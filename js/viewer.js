@@ -220,6 +220,9 @@
     renderSoorten();
     renderLijst();
     renderMarkers(animeer);
+    // samenvatting voor het ingeklapte paneel op mobiel
+    var bron = staat.modus === 'oogst' ? $('samenvatting') : $('gezSamenvatting');
+    $('greepKort').textContent = bron.firstChild ? bron.firstChild.textContent : bron.textContent;
   }
 
   function renderKalender() {
@@ -453,8 +456,7 @@
     staat.gekozen = b.id;   // id kan ook een boomnummer zijn, zoals bij #12
     renderKaartje(b);
     $('boom').hidden = false;
-    $('paneel').classList.remove('is-open');
-    zetGreep(false);
+    if (paneelStand() === 'open') zetPaneel('half');
     renderMarkers(false);
     renderLijst();
     if (location.hash.slice(1) !== encodeURIComponent(id)) {
@@ -573,9 +575,70 @@
   // ---------------------------------------------------------------------------
   // Bediening
   // ---------------------------------------------------------------------------
-  function zetGreep(open) {
-    $('greep').setAttribute('aria-expanded', String(open));
-    $('greepTekst').textContent = open ? 'Paneel verkleinen' : 'Paneel vergroten';
+  // Standen van het paneel op mobiel: dicht, half of open.
+  var STANDEN = ['dicht', 'half', 'open'];
+  function paneelStand() {
+    var k = $('paneel').classList;
+    return k.contains('is-dicht') ? 'dicht' : k.contains('is-open') ? 'open' : 'half';
+  }
+  function zetPaneel(stand) {
+    var k = $('paneel').classList;
+    k.toggle('is-dicht', stand === 'dicht');
+    k.toggle('is-open', stand === 'open');
+    $('greep').setAttribute('aria-expanded', String(stand !== 'dicht'));
+    $('greepTekst').textContent = stand === 'dicht' ? 'Paneel uitklappen' : stand === 'half' ? 'Paneel inklappen' : 'Paneel verkleinen';
+    // de kaart wordt groter of kleiner; Leaflet moet zijn maat opnieuw meten
+    window.setTimeout(function () { kaart.invalidateSize({ animate: false }); }, 280);
+  }
+  function standHoogte(stand) {
+    var h = window.innerHeight;
+    return stand === 'dicht' ? 60 : stand === 'open' ? h * 0.88 : h * 0.44;
+  }
+  // Slepen aan de greep: het paneel volgt de vinger en springt daarna naar de dichtstbijzijnde stand.
+  function koppelGreep() {
+    var greep = $('greep'), paneel = $('paneel');
+    var startY = 0, startH = 0, bezig = false, versleept = false;
+    greep.addEventListener('pointerdown', function (e) {
+      if (window.matchMedia('(min-width: 860px)').matches) return;
+      bezig = true; versleept = false;
+      startY = e.clientY; startH = paneel.getBoundingClientRect().height;
+      greep.setPointerCapture(e.pointerId);
+      paneel.classList.add('is-sleep');
+    });
+    greep.addEventListener('pointermove', function (e) {
+      if (!bezig) return;
+      var d = startY - e.clientY;
+      if (Math.abs(d) > 6) versleept = true;
+      if (!versleept) return;
+      var h = Math.max(standHoogte('dicht'), Math.min(standHoogte('open'), startH + d));
+      paneel.style.height = h + 'px';
+    });
+    function klaar(e) {
+      if (!bezig) return;
+      bezig = false;
+      paneel.classList.remove('is-sleep');
+      if (versleept) {
+        var h = paneel.getBoundingClientRect().height;
+        paneel.style.height = '';
+        var beste = STANDEN[0];
+        STANDEN.forEach(function (s) { if (Math.abs(standHoogte(s) - h) < Math.abs(standHoogte(beste) - h)) beste = s; });
+        zetPaneel(beste);
+      } else {
+        zetPaneel(paneelStand() === 'dicht' ? 'half' : 'dicht');
+      }
+    }
+    greep.addEventListener('pointerup', klaar);
+    greep.addEventListener('pointercancel', klaar);
+    // toetsenbord: pijl omhoog en omlaag lopen door de standen, Enter of spatie wisselt dicht/half
+    greep.addEventListener('keydown', function (e) {
+      var i = STANDEN.indexOf(paneelStand());
+      if (e.key === 'ArrowUp' && i < 2) { e.preventDefault(); zetPaneel(STANDEN[i + 1]); }
+      if (e.key === 'ArrowDown' && i > 0) { e.preventDefault(); zetPaneel(STANDEN[i - 1]); }
+    });
+    greep.addEventListener('click', function (e) {
+      // muisklik of toetsenbord zonder pointerdown (bijvoorbeeld Enter)
+      if (e.detail === 0) zetPaneel(paneelStand() === 'dicht' ? 'half' : 'dicht');
+    });
   }
 
   function koppelBediening() {
@@ -650,10 +713,7 @@
 
     koppelFotoviewer();
 
-    $('greep').addEventListener('click', function () {
-      var open = $('paneel').classList.toggle('is-open');
-      zetGreep(open);
-    });
+    koppelGreep();
 
     $('overKnop').addEventListener('click', function () {
       if (typeof $('over').showModal === 'function') $('over').showModal();

@@ -44,6 +44,7 @@
   --paneel-breedte: 380px;
   --vel-hoogte: 44vh;
   --vel-open: 88vh;
+  --vel-dicht: calc(60px + env(safe-area-inset-bottom));
 }
 @supports (height: 1dvh) {
   :root { --vel-hoogte: 44dvh; --vel-open: 88dvh; }
@@ -97,6 +98,7 @@ a { color: inherit; }
 }
 #kaart { position: absolute; inset: 0; background: #DDE4D7; }
 .greep-houder { display: none; }
+.greep-kort { display: none; }
 
 /* ---------- Kop ---------- */
 
@@ -677,11 +679,16 @@ a { color: inherit; }
 
 @media (max-width: 859px) {
   .app { display: block; }
+  /* Het paneel is een vel met drie standen: dicht (alleen de greep met een
+     samenvatting), half (standaard) en open. Tikken op de greep wisselt tussen
+     dicht en half; slepen aan de greep kiest elke stand, ook open. */
   .kaartvlak {
     position: fixed;
     top: 0; left: 0; right: 0;
     bottom: var(--vel-hoogte);
+    transition: bottom .25s ease;
   }
+  .paneel.is-dicht ~ .kaartvlak { bottom: var(--vel-dicht); }
   .paneel {
     position: fixed;
     left: 0; right: 0; bottom: 0;
@@ -693,6 +700,9 @@ a { color: inherit; }
     transition: height .25s ease;
   }
   .paneel.is-open { height: var(--vel-open); }
+  .paneel.is-dicht { height: var(--vel-dicht); overflow: hidden; }
+  .paneel.is-sleep { transition: none; }
+  .paneel.is-sleep ~ .kaartvlak { transition: none; }
   .greep-houder {
     display: block;
     position: sticky;
@@ -704,15 +714,30 @@ a { color: inherit; }
   .greep {
     display: grid;
     place-items: center;
+    gap: 7px;
     width: 100%;
-    height: 26px;
+    min-height: 26px;
+    padding: 0 18px;
     border: 0;
     background: none;
     cursor: pointer;
+    touch-action: none;
   }
   .greep-streep {
     width: 44px; height: 5px; border-radius: 3px;
     background: var(--lijn);
+  }
+  .paneel.is-dicht .greep { min-height: 60px; }
+  .paneel.is-dicht .greep-kort {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--inkt);
   }
   .kop h1 { font-size: 26px; }
   .ondertitel { font-size: 14px; }
